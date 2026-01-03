@@ -43,19 +43,51 @@ namespace Projekt.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateSurveyQuestion(Survey model)
+        public IActionResult CreateSurveyQuestion(String content)
         {
 
-            model.Id = (int) HttpContext.Session.GetInt32("SurveyId");
-            ViewData["Title"] = model.Title;
+            var question = new Question
+            {
+                Content = content,
+                SurveyId = (int)HttpContext.Session.GetInt32("SurveyId")
 
-            _context.Surveys.Add(model);
+            };
+
+            
+
+            _context.Questions.Add(question);
             _context.SaveChanges();
 
-            return View("SurveyQuestionCreator");
+            HttpContext.Session.SetInt32("QuestionId", question.Id);
 
-
+            return View("SurveyAnswerCreator");
 
         }
+
+        [HttpGet]
+        public IActionResult CreateSurveyAnswer()
+        {
+            return View("SurveyAnswerCreator");
+        }
+
+        [HttpPost]
+        public IActionResult CreateSurveyAnswer(String content)
+        {
+
+            var answer = new Answer
+            {
+                Content = content,
+                QuestionId = (int)HttpContext.Session.GetInt32("QuestionId")
+
+            };
+
+
+            _context.Answers.Add(answer);
+            _context.SaveChanges();
+
+            return View("SurveyAnswerCreator");
+
+        }
+
     }
 }

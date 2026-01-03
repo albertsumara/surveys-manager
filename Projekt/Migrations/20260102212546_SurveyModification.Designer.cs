@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projekt.Data;
 
@@ -10,9 +11,11 @@ using Projekt.Data;
 namespace Projekt.Migrations
 {
     [DbContext(typeof(ProjektContext))]
-    partial class ProjektContextModelSnapshot : ModelSnapshot
+    [Migration("20260102212546_SurveyModification")]
+    partial class SurveyModification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +59,7 @@ namespace Projekt.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("SurveyId")
+                    b.Property<int?>("SurveyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -143,13 +146,9 @@ namespace Projekt.Migrations
 
             modelBuilder.Entity("Projekt.Models.Question", b =>
                 {
-                    b.HasOne("Projekt.Models.Survey", "Survey")
+                    b.HasOne("Projekt.Models.Survey", null)
                         .WithMany("Questions")
-                        .HasForeignKey("SurveyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Survey");
+                        .HasForeignKey("SurveyId");
                 });
 
             modelBuilder.Entity("Projekt.Models.Question", b =>
