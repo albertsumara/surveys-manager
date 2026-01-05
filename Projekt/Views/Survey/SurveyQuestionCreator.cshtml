@@ -1,4 +1,6 @@
-﻿<h2>Stwórz pytanie dla ankiety: @ViewData["Title"]</h2>
+﻿@model Projekt.Models.Question;
+
+<h2>Stwórz pytanie dla ankiety: @ViewData["Title"]</h2>
 
 <form asp-controller="Survey" asp-action="CreateSurveyQuestion" method="post">
     <div asp-validation-summary="All"></div>

@@ -17,11 +17,11 @@ namespace Projekt.Controllers
             return View();
         }
 
-        //[HttpGet]
-        //public IActionResult CreateSurveyTitle()
-        //{
-        //    return View("SurveyCreator");
-        //}
+        [HttpGet]
+        public IActionResult CreateSurveyTitle()
+        {
+            return View("SurveyCreator");
+        }
 
         [HttpPost]
         public IActionResult CreateSurveyTitle(Survey model)
@@ -43,15 +43,12 @@ namespace Projekt.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateSurveyQuestion(String content)
+        public IActionResult CreateSurveyQuestion(Question question)
         {
 
-            var question = new Question
-            {
-                Content = content,
-                SurveyId = (int)HttpContext.Session.GetInt32("SurveyId")
 
-            };
+            int SurveyId = (int)HttpContext.Session.GetInt32("SurveyId");
+
 
             
 
@@ -88,6 +85,73 @@ namespace Projekt.Controllers
             return View("SurveyAnswerCreator");
 
         }
+
+        [HttpGet]
+        public IActionResult SurveyChooser()
+        {
+            return View();
+
+        }
+        [HttpGet]
+        public IActionResult ListSurveys()
+        {
+            var surveys = _context.Surveys
+                .Select(s => new { s.Id, s.Title })
+                .ToList();
+            return Json(surveys);
+        }
+
+        [HttpPost]
+        public IActionResult SaveChoosenSurvey([FromBody] int surveyId)
+        {
+
+            HttpContext.Session.SetInt32("SurveyId", surveyId);
+
+            Console.WriteLine("surveyId" + ": " +surveyId);
+
+            return Ok(new { success = true });
+        }
+
+        [HttpGet]
+        public IActionResult GetChoosenSurvey()
+        {
+            int? surveyId = HttpContext.Session.GetInt32("SurveyId");
+            if (surveyId.HasValue)
+                return Json(new { SurveyId = surveyId.Value });
+            else
+                return Json(new { SurveyId = (int?)null });
+        }
+
+        [HttpGet]
+        public IActionResult SurveyCompleter()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ListQuestions(int surveyId)
+        {
+            var questions = _context.Questions
+                .Where(q => q.SurveyId == surveyId)
+                .OrderBy(q => q.Id)
+                .Select(q => new { q.Id, q.Content })
+                .ToList();
+
+            return Json(questions);
+        }
+
+        [HttpGet]
+        public IActionResult ListAnswers(int questionId)
+        {
+            var answers = _context.Answers
+                .Where(a => a.QuestionId == questionId)
+                .OrderBy(a => a.Id)
+                .Select(a => new { a.Id, a.Content })
+                .ToList();
+
+            return Json(answers);
+        }
+
 
     }
 }
