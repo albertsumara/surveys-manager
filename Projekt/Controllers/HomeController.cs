@@ -12,6 +12,8 @@ namespace Projekt.Controllers
     public class HomeController : Controller
     {
 
+
+
         protected readonly ProjektContext _context;
 
         public HomeController(ProjektContext context)

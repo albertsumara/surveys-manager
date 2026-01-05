@@ -5,25 +5,25 @@
 namespace Projekt.Migrations
 {
     /// <inheritdoc />
-    public partial class UsernameAdded : Migration
+    public partial class SurveyResultsUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Username",
-                table: "Users",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<int>(
+                name: "UserId",
+                table: "SurveyResults",
+                type: "int",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Username",
-                table: "Users");
+                name: "UserId",
+                table: "SurveyResults");
         }
     }
 }

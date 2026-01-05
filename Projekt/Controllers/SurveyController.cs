@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Projekt.Data;
 using Projekt.Models;
 
@@ -7,7 +8,7 @@ namespace Projekt.Controllers
     public class SurveyController : BaseController
     {
 
-        public SurveyController(ProjektContext context) : base(context)
+        public SurveyController(UserManager<ApplicationUser> userManager, ProjektContext context) : base(userManager, context)
         {
         }
 
@@ -43,12 +44,15 @@ namespace Projekt.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateSurveyQuestion(Question question)
+        public IActionResult CreateSurveyQuestion(String content)
         {
 
+            var question = new Question
+            {
+                Content = content,
+                SurveyId = (int)HttpContext.Session.GetInt32("SurveyId")
 
-            int SurveyId = (int)HttpContext.Session.GetInt32("SurveyId");
-
+            };
 
             
 

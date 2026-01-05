@@ -12,8 +12,8 @@ using Projekt.Data;
 namespace Projekt.Migrations
 {
     [DbContext(typeof(ProjektContext))]
-    [Migration("20260103104917_IdentityInit")]
-    partial class IdentityInit
+    [Migration("20260105130915_SurveyResultsUpdate")]
+    partial class SurveyResultsUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,6 +263,30 @@ namespace Projekt.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Projekt.Models.ChoosenAnswers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnswerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SurveyResultsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SurveyResultsId");
+
+                    b.ToTable("ChoosenAnswers");
+                });
+
             modelBuilder.Entity("Projekt.Models.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -302,6 +326,25 @@ namespace Projekt.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Surveys");
+                });
+
+            modelBuilder.Entity("Projekt.Models.SurveyResults", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("SurveyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SurveyResults");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -366,6 +409,13 @@ namespace Projekt.Migrations
                     b.Navigation("Question");
                 });
 
+            modelBuilder.Entity("Projekt.Models.ChoosenAnswers", b =>
+                {
+                    b.HasOne("Projekt.Models.SurveyResults", null)
+                        .WithMany("ChoosenAnswers")
+                        .HasForeignKey("SurveyResultsId");
+                });
+
             modelBuilder.Entity("Projekt.Models.Question", b =>
                 {
                     b.HasOne("Projekt.Models.Survey", "Survey")
@@ -385,6 +435,11 @@ namespace Projekt.Migrations
             modelBuilder.Entity("Projekt.Models.Survey", b =>
                 {
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Projekt.Models.SurveyResults", b =>
+                {
+                    b.Navigation("ChoosenAnswers");
                 });
 #pragma warning restore 612, 618
         }
