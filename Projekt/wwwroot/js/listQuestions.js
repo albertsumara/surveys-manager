@@ -1,25 +1,28 @@
 ﻿//let CurrentSurvey = null;
 //let CurrentQuestion = null;
-
+let questionCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
     const questionListDiv = document.getElementById("question-list");
+    const errorDiv = document.createElement("div");
+    errorDiv.id = "error-message";
+    errorDiv.style.color = "red";
 
     getSurveyId().then(surveyId => {
         //console.log(surveyId);
         if (!surveyId) return;
         CurrentSurvey = surveyId;
 
-        fetch(`/SurveyResults/GetResults?surveyId=${surveyId}`)
-            .then(response => {
-                if (!response.ok) throw new Error("Network Error");
-                return response.json();
-            })
-            .then(questions => {
+        //fetch(`/SurveyResults/GetResults?surveyId=${surveyId}`)
+        //    .then(response => {
+        //        if (!response.ok) throw new Error("Network Error");
+        //        return response.json();
+        //    })
+        //    .then(questions => {
 
-                console.log(questions);
+        //        console.log(questions);
 
-            });
+        //    });
 
         fetch(`/Survey/ListQuestions?surveyId=${surveyId}`)
             .then(response => {
@@ -46,6 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 questions.forEach(question => {
                     //console.log(question);
 
+                    questionCount += 1;
+
                     const questionDiv = document.createElement("div");
                     const questionTitle = document.createElement("h4");
                     questionTitle.textContent = question.content;
@@ -58,9 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 //    questionDiv.appendChild(document.createElement("br"));
                 });
 
-                answersForm.appendChild(submitButton);
 
+                answersForm.appendChild(submitButton);
                 questionListDiv.appendChild(answersForm);
+                questionListDiv.appendChild(errorDiv);
 
             })
             .catch(error => console.error("Error fetching questions:", error));
@@ -92,6 +98,7 @@ function listAnswers(questionId, containerDiv) {
                 const input = document.createElement("input");
                 const label = document.createElement("label");
                 const br = document.createElement("br");
+                
 
                 input.setAttribute("type", "radio");
                 input.setAttribute("name", questionId);
@@ -114,8 +121,17 @@ function onSubmit(event, surveyId) {
 
     event.preventDefault();
 
-    const formData = new FormData(event.target);
+    const errorDiv = document.getElementById("error-message");
 
+    const formData = new FormData(event.target);
+    const answers = Array.from(formData.entries().map(([key, value]) => ({ questionId: key, answerId: value })));
+
+    if (answers.length < questionCount) {
+        errorDiv.textContent = "Musisz wybrać odpowiedzi!";
+        return;
+    }
+
+    errorDiv.textContent = "";
     console.dir(formData);
 
     fetch(`/SurveyResults/Results`, {
@@ -129,16 +145,12 @@ function onSubmit(event, surveyId) {
         body: JSON.stringify({
 
             surveyId: surveyId,
-            ChoosenAnswers: Array.from(formData.entries().map(([key, value]) => ({ questionId: key, answerId: value })))
-        })
-
-        
+            ChoosenAnswers: answers
+        })    
     })
-
-    //console.log(event.target);
-
-
-
-
-
+    .then(response => {
+        if (!response.ok) throw new Error("Failed to submit");
+        window.location.href = `/Survey/SurveyChooser?success=1`;
+    })
+    .catch(err => console.error("Error submitting survey:", err));
 }

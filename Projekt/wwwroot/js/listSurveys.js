@@ -1,8 +1,12 @@
 ﻿//let CurrentSurvey = null;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded",async function () {
 
     const surveyListDiv = document.getElementById("survey-list");
+    const succesDiv = document.createElement("div");
+    succesDiv.id = "succes-message";
+    succesDiv.style.color = "green";
+
 
     fetch('/Survey/ListSurveys')
         .then(response => {
@@ -12,7 +16,21 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(surveys => {
             surveyListDiv.innerHTML = "";
 
+            if (!surveys || surveys.length === 0) {
+
+                const paragraph = document.createElement("p");
+                paragraph.textContent = "Brak ankiet do uzupełnienia."
+                surveyListDiv.appendChild(paragraph);
+                return;
+
+            }
+
             surveys.forEach((survey) => {
+
+                //isCompleted(survey.id).then(completed => {
+
+                //    if (completed) return;
+
                 console.log(survey);
                 const button = document.createElement("button");
                 button.type = "button";
@@ -32,9 +50,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 surveyListDiv.appendChild(br);
             });
         })
-        .catch(error => console.error("Error fetching surveys:", error));
 
-});
+    surveyListDiv.appendChild(succesDiv);
+    succesInfo();
+
+})
+    //.catch(error => console.error("Error fetching surveys:", error));
+
 
 function saveSurveyToSession(surveyId) {
     fetch('/Survey/SaveChoosenSurvey', {
@@ -48,4 +70,29 @@ function saveSurveyToSession(surveyId) {
             }
         })
         .catch(err => console.error("Error saving survey:", err));
+}
+
+//async function isCompleted(surveyId) {
+
+//    try {
+//        const response = await fetch(`/Survey/IsCompleted?surveyId=${surveyId}`);
+//        const result = await response.json();
+//        console.log(result);
+//        return result;
+//    } catch (err) {
+//        console.error(err);
+//        return;
+//    }
+//}
+
+function succesInfo() {
+    const succesDiv = document.getElementById("succes-message");
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get("success") === "1") {
+
+        succesDiv.textContent = "Ankieta ukończona pomyślnie!"
+
+    }
+
 }

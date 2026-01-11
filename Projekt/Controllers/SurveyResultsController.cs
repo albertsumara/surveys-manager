@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data;
-
+using System.Linq;
 using Projekt.Models;
 
 
@@ -11,8 +11,13 @@ namespace Projekt.Controllers
     public class SurveyResultsController : BaseController
     {
 
+        private int[] completedSurveys;
+
         public SurveyResultsController(UserManager<ApplicationUser> userManager, ProjektContext context) : base(userManager, context)
         {
+
+            completedSurveys = CompletedSurveys().ToArray();
+
         }
         public IActionResult Index()
         {
@@ -24,6 +29,18 @@ namespace Projekt.Controllers
         {
 
             return View();
+
+        }
+
+        
+        [HttpGet]
+        public IActionResult ListSurveys()
+        {
+
+            var surveys = _context.Surveys
+                .Select(s => new { s.Id, s.Title })
+                .ToList();
+            return Json(surveys);
 
         }
 
@@ -106,6 +123,28 @@ namespace Projekt.Controllers
                 );
 
             return Json(stats);
+
+        }
+
+        [HttpGet]
+        public IActionResult IsCompleted(int surveyId)
+        {
+            Console.WriteLine("id: " + surveyId);
+            return Ok(completedSurveys.Contains(surveyId));
+
+        }
+
+        public List<int> CompletedSurveys()
+        {
+
+            var completedSurveys = _context.SurveyResults
+                .Select(sr => sr.SurveyId)
+                .Distinct()
+                .ToList();
+
+            Console.WriteLine("test: " + string.Join(", ", completedSurveys));
+
+            return completedSurveys;
 
         }
 

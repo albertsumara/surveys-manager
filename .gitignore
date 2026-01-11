@@ -1,4 +1,9 @@
 .vs/
 bin/
 obj/
+<<<<<<< Updated upstream
 **/Properties/launchSettings.json
+=======
+**/Properties/launchSettings.json
+
+>>>>>>> Stashed changes

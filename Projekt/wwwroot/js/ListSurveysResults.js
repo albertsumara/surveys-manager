@@ -1,8 +1,8 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", async function () {
 
     const surveyListDiv = document.getElementById("survey-list");
 
-    fetch('/Survey/ListSurveys')
+    fetch('/SurveyResults/ListSurveys')
         .then(response => {
             if (!response.ok) throw new Error("Network Error");
             return response.json();
@@ -11,25 +11,36 @@
             surveyListDiv.innerHTML = "";
 
             surveys.forEach((survey) => {
-                console.log(survey);
-                const button = document.createElement("button");
-                button.type = "button";
-                button.textContent = survey.title;
-                button.classList.add("btn", "btn-primary", "m-1");
 
-                button.addEventListener("click", function () {
-                    saveSurveyToSession(survey.id);
-                    window.location.href = `/SurveyResults/SurveyStats?surveyId=${survey.Id}`;
+                isCompleted(survey.id).then(completed => {
+
+                    //console.log(survey);
+
+                    //if (!isCompleted(survey.id)) {
+                    //    return;
+                    //}
+
+                    if (!completed) return;
+
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.textContent = survey.title;
+                    button.classList.add("btn", "btn-primary", "m-1");
+
+                    button.addEventListener("click", function () {
+                        saveSurveyToSession(survey.id);
+                        window.location.href = `/SurveyResults/SurveyStats?surveyId=${survey.Id}`;
+                    });
+
+                    surveyListDiv.appendChild(button);
+                    const br = document.createElement("br");
+                    surveyListDiv.appendChild(br);
                 });
-
-                surveyListDiv.appendChild(button);
-
-                const br = document.createElement("br");
-                surveyListDiv.appendChild(br);
-            });
+            })
         })
         .catch(error => console.error("Error fetching surveys:", error));
 
+                
 });
 
 function saveSurveyToSession(surveyId) {
@@ -44,4 +55,21 @@ function saveSurveyToSession(surveyId) {
             }
         })
         .catch(err => console.error("Error saving survey:", err));
+}
+
+
+
+async function isCompleted(surveyId) {
+
+    try {
+        const response = await fetch(`/SurveyResults/IsCompleted?surveyId=${surveyId}`);
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (err) {
+        console.error(err);
+        return;
+    }
+    
+
 }
