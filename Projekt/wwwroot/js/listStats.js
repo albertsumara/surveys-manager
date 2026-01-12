@@ -53,7 +53,7 @@ function getSurveyId() {
         });
 }
 
-function listAnswers(questionId, containerDiv, answerStats) {
+function listAnswers(questionId, containerDiv, answerStats = {}) {
     fetch(`/Survey/ListAnswers?questionId=${questionId}`)
         .then(response => response.json())
         .then(answers => {
@@ -70,7 +70,7 @@ function listAnswers(questionId, containerDiv, answerStats) {
 
                 const strong = document.createElement("strong")
 
-                if (answer.id in answerStats) {
+                if ((answer.id in answerStats) && (total > 0)) {
 
                     console.log("jest");
                    strong.textContent = `    ${Math.round(answerStats[answer.id] / total * 100)}%`

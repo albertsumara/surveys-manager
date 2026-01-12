@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Projekt.Data;
-using System.Linq;
 using Projekt.Models;
+using System.Linq;
+using System.Text.Json;
 
 
 namespace Projekt.Controllers
@@ -108,14 +109,42 @@ namespace Projekt.Controllers
         [HttpGet]
         public IActionResult GetStats(int surveyId)
         {
-           
+
+            int ? cityId = HttpContext.Session.GetInt32("CityId");
+            int ? ageFrom = HttpContext.Session.GetInt32("AgeFrom");
+            int ? ageTo = HttpContext.Session.GetInt32("AgeTo");
+
+            Console.WriteLine("cityid: " + cityId);
+            Console.WriteLine("ageFrom: " + ageFrom);
+            Console.WriteLine("ageTo: " + ageTo);
+
             if (surveyId == 0)
             {
                 return BadRequest();
             }
 
+            IQueryable<ApplicationUser> userFilter = _context.Users;
+
+            if (ageFrom.HasValue)
+                userFilter = userFilter.Where(u => u.Age >= ageFrom.Value);
+
+            if (ageTo.HasValue)
+                userFilter = userFilter.Where(u => u.Age <= ageTo.Value);
+
+            if (cityId.HasValue && cityId.Value != 0)
+            {
+
+                userFilter = userFilter
+                    .Where(u => u.Town == (ApplicationUser.Miasta)cityId.Value);
+
+            }
+
+            var userResult = userFilter
+                .Select(u => u.Id)
+                .ToList();
+
             var surveyResults = _context.SurveyResults
-                .Where(sr => sr.SurveyId == surveyId)
+                .Where(sr => sr.SurveyId == surveyId && userResult.Contains(sr.UserId))
                 .SelectMany(sr => sr.ChoosenAnswers)
                 .ToList();
 
@@ -130,7 +159,6 @@ namespace Projekt.Controllers
                 );
 
             return Json(stats);
-
         }
 
         [HttpGet]
@@ -171,12 +199,29 @@ namespace Projekt.Controllers
 
         }
 
-        [HttpGet] 
+        [HttpGet]
         public IActionResult SurveyStatsFilter()
         {
 
             return View();
 
+        }
+
+
+        [HttpPost]
+        public IActionResult SaveChoosenFilters([FromBody] JsonElement Filters )
+        {
+
+            Console.WriteLine("przed zapisem w sesji \ncity: " + Filters.GetProperty("cityId"));
+            Console.WriteLine("ageFrom: " + Filters.GetProperty("ageFrom"));
+            Console.WriteLine("ageTo: " + Filters.GetProperty("ageTo"));
+
+            HttpContext.Session.SetInt32("CityId", Filters.GetProperty("cityId").GetInt32());
+            HttpContext.Session.SetInt32("AgeFrom", Filters.GetProperty("ageFrom").GetInt32());
+            HttpContext.Session.SetInt32("AgeTo", Filters.GetProperty("ageTo").GetInt32());
+
+
+            return Ok(new { success = true });
         }
 
     }

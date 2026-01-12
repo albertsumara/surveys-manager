@@ -13,7 +13,7 @@ namespace Projekt.Models
         [MinLength(2)]
         public string Surname { get; set; }
 
-        [Range(10, 80)]
+        [Range(18, 99)]
         public int? Age { get; set; }
 
         public Miasta Town { get; set; }
