@@ -13,6 +13,7 @@ namespace Projekt.Models
         [MinLength(2)]
         public string Surname { get; set; }
 
+        [Required]
         [Range(18, 99)]
         public int? Age { get; set; }
 

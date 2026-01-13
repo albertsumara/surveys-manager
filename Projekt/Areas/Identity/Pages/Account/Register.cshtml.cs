@@ -34,7 +34,7 @@ namespace Projekt.Areas.Identity.Pages.Account
             public string Surname { get; set; }
 
             [Required]
-            [Range(10, 80)]
+            [Range(18, 99)]
             public int? Age { get; set; }
 
             [Required]

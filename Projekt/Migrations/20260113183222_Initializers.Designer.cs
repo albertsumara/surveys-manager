@@ -12,8 +12,8 @@ using Projekt.Data;
 namespace Projekt.Migrations
 {
     [DbContext(typeof(ProjektContext))]
-    [Migration("20260113165759_Initalizers added")]
-    partial class Initalizersadded
+    [Migration("20260113183222_Initializers")]
+    partial class Initializers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
