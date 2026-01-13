@@ -19,40 +19,40 @@ namespace Projekt.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Results([FromBody] JsonElement surveyJson)
-        //{
-        //    var title = surveyJson.GetProperty("title").GetString();
+        [HttpPost]
+        public IActionResult Results([FromBody] JsonElement surveyJson)
+        {
+            var title = surveyJson.GetProperty("title").GetString();
 
-        //    if (string.IsNullOrEmpty(title))
-        //        return BadRequest("Title is required");
+            if (string.IsNullOrEmpty(title))
+                return BadRequest("Title is required");
 
-        //    var survey = new Survey { Title = title! };
+            var survey = new Survey { Title = title! };
 
-        //    foreach (var questionJson in surveyJson.GetProperty("questions").EnumerateArray())
-        //    {
-        //        var question = new Question
-        //        {
-        //            Content = questionJson.GetProperty("content").GetString()!
-        //        };
+            foreach (var questionJson in surveyJson.GetProperty("questions").EnumerateArray())
+            {
+                var question = new Question
+                {
+                    Content = questionJson.GetProperty("content").GetString()!
+                };
 
-        //        foreach (var answerJson in questionJson.GetProperty("answers").EnumerateArray())
-        //        {
-        //            var answer = new Answer
-        //            {
-        //                Content = answerJson.GetString()!
-        //            };
-        //            question.Answers.Add(answer);
-        //        }
+                foreach (var answerJson in questionJson.GetProperty("answers").EnumerateArray())
+                {
+                    var answer = new Answer
+                    {
+                        Content = answerJson.GetString()!
+                    };
+                    question.Answers.Add(answer);
+                }
 
-        //        survey.Questions.Add(question);
-        //    }
+                survey.Questions.Add(question);
+            }
 
-        //    _context.Surveys.Add(survey);
-        //    _context.SaveChanges();
+            _context.Surveys.Add(survey);
+            _context.SaveChanges();
 
-        //    return Ok(new { success = true });
-        //}
+            return Ok(new { success = true });
+        }
 
 
         //[HttpGet]

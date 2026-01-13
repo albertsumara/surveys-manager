@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded",async function () {
     succesDiv.id = "succes-message";
     succesDiv.style.color = "green";
 
+    
+
 
     fetch('/Survey/ListSurveys')
         .then(response => {
@@ -15,6 +17,9 @@ document.addEventListener("DOMContentLoaded",async function () {
         })
         .then(surveys => {
             surveyListDiv.innerHTML = "";
+
+            surveyListDiv.appendChild(succesDiv);
+            succesInfo();
 
             if (!surveys || surveys.length === 0) {
 
@@ -50,9 +55,6 @@ document.addEventListener("DOMContentLoaded",async function () {
                 surveyListDiv.appendChild(br);
             });
         })
-
-    surveyListDiv.appendChild(succesDiv);
-    succesInfo();
 
 })
     //.catch(error => console.error("Error fetching surveys:", error));
@@ -92,6 +94,7 @@ function succesInfo() {
     if (urlParams.get("success") === "1") {
 
         succesDiv.textContent = "Ankieta ukończona pomyślnie!"
+        console.log("udało się!")
 
     }
 

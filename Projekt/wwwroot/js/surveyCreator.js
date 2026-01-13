@@ -19,6 +19,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     const errorDiv = document.createElement("div");
     errorDiv.id = "error";
 
+    const succesDiv = document.getElementById("succes-div");
+    const succesMessage = document.createElement("p");
+    succesMessage.id = `succes-message`;
+    succesMessage.style.color = "green";
+
+    succesDiv.appendChild(succesMessage);
+
+    succesMessage.textContent = "";
+
+    //updateSetSurveyButton();
+
 
     document.getElementById("setTitleBtn").addEventListener("click", async () => {
         clearError();
@@ -50,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log(survey);
 
         //window.location.href = "/Survey/CreateSurveyQuestion";
-
+        succesInfo("");
         document.getElementById("step-title").style.display = "none";
         document.getElementById("step-question").style.display = "block";
 
@@ -88,11 +99,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         //console.log(survey);
 
         //window.location.href = "/Survey/CreateSurveyAnswer";
-
+        succesInfo("");
     });
 
     document.getElementById("setAnswerContentBtn").addEventListener("click", () => {
         clearError();
+        //updateSetSurveyButton();
         const answerContentInput = document.getElementById("surveyAnswerContent");
         const answerContent = answerContentInput.value.trim();
         //answerContentInput.value = "";
@@ -116,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         answerContentInput.value = "";
 
         //window.location.href = "/Survey/CreateSurveyAnswer";
-
+        succesInfo("Pomyślnie dodano opcję!");
     });
 
 
@@ -136,10 +148,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         question.content = "";
         question.answers = [];
+        backToQuestion();
 
         //document.getElementById("step-answer").style.display = "none";
         //document.getElementById("step-question").style.display = "block";
         //window.location.href = "/Survey/CreateSurveyQuestion";
+        succesInfo("Pomyślnie dodano pytanie!");
     });
 
     document.getElementById("setSurvey").addEventListener("click", () => {
@@ -152,6 +166,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
             //window.location.href = "/Survey/CreateSurveyAnswer";
+            succesInfo("Ankieta stworzona pomyślnie!");
             return;
         }
 
@@ -160,8 +175,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         survey.title = "";
         survey.questions = [];
 
-        document.getElementById("step-answer").style.display = "none";
+        document.getElementById("step-question").style.display = "none";
         document.getElementById("step-title").style.display = "block";
+        succesInfo("Ankieta dodana pomyślnie!");
 
         //window.location.href = "/Survey/CreateSurveyQuestion";
     });
@@ -171,6 +187,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("step-answer").style.display = "none";
         document.getElementById("step-question").style.display = "block";
         question.content = "";
+        question.answers = [];
+        succesInfo("");
+        //updateSetSurveyButton();
+
     });
 
     document.getElementById("backToTitle").addEventListener("click", () => {
@@ -178,11 +198,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("step-question").style.display = "none";
         document.getElementById("step-title").style.display = "block";
         survey.title = "";
+        succesInfo("");
     });
 
 
 
 });
+
+function backToQuestion(){
+    clearError();
+    document.getElementById("step-answer").style.display = "none";
+    document.getElementById("step-question").style.display = "block";
+    question.content = "";
+    question.answers = [];
+    succesInfo("");
+
+}
 
 function submitSurvey() {
 
@@ -209,6 +240,7 @@ function submitSurvey() {
 }
 
 function showError(message) {
+    succesInfo("");
     const errorDiv = document.getElementById("error");
     errorDiv.style.color = "red";
     errorDiv.textContent = message;
@@ -234,5 +266,12 @@ async function getTitles() {
 function checkTitle(titles, title) {
 
     return titles.includes(title);
+
+}
+
+function succesInfo(infoContent) {
+
+    const succesMessage = document.getElementById("succes-message");
+    succesMessage.textContent = infoContent;
 
 }

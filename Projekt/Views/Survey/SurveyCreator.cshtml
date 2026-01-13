@@ -29,6 +29,7 @@
 
 
 
+
 <div id="step-title" class="step active">
     <h2>Podaj tytuł ankiety:</h2>
     <input type="text" id="surveyTitle" placeholder="tytuł">
@@ -40,6 +41,8 @@
     <input type="text" id="surveyQuestionContent" placeholder="pytanie">
     <button id="setQuestionContentBtn">Dalej</button>
     <button id="backToTitle">Cofnij</button>
+    <button id="setSurvey" >Zapisz ankietę.</button>
+
 </div>
 
 <div id="step-answer" class="step">
@@ -47,10 +50,10 @@
     <input type="text" id="surveyAnswerContent" placeholder="odpowiedź">
     <button id="setAnswerContentBtn">Dodaj odpowiedź</button>
     <button id="setQuestion">Zapisz pytanie.</button>
-    <button id="setSurvey">Zapisz ankietę.</button>
-    <button id="backToQuestion">Cofnij/Następne pytanie.</button>
+    @* <button id="backToQuestion">Cofnij/Następne pytanie.</button> *@
 
 </div>
+<div id="succes-div"></div>
 <div id="error"></div>
 
 <script src="~/js/surveyCreator.js"></script>
