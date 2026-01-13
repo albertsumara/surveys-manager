@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Projekt.Data;
 using Projekt.Models;
 using Microsoft.AspNetCore.Identity;
+using Projekt.Data.Initializers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await DbInitializer.SeedRolesAndAdminAsync(services);
+    await DbInitializer.InitializeAsync(services);
 }
 
 // Middleware
