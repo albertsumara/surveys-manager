@@ -2,18 +2,18 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /app
 
-# Kopiuj csproj i przywróæ zale¿noœci
-COPY *.csproj ./
+# Kopiuj csproj z podfolderu i przywrÃ³Ä‡ zaleÅ¼noÅ›ci
+COPY surveymanager/SurveyManager.csproj ./ 
 RUN dotnet restore
 
-# Kopiuj resztê projektu i zbuduj
-COPY . ./
+# Kopiuj resztÄ™ projektu z podfolderu i zbuduj
+COPY surveymanager/. ./
 RUN dotnet publish -c Release -o out
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=build /app/out ./
 
 EXPOSE 5000
 ENTRYPOINT ["dotnet", "SurveyManager.dll"]
