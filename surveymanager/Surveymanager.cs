@@ -15,12 +15,20 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-//// DbContext
-//builder.Services.AddDbContext<ProjektContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// ================================
+// DbContext - dynamiczny connection string
+// ================================
+
+// Pobierz zmienne œrodowiskowe (Render) lub fallback lokalny
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
+var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "surveydb";
+var dbUser = Environment.GetEnvironmentVariable("DB_USER") ?? "surveyuser";
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "strongpassword";
+
+var connString = $"Host={dbHost};Database={dbName};Username={dbUser};Password={dbPassword}";
 
 builder.Services.AddDbContext<SurveyManagerContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connString));
 
 // Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -31,19 +39,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireDigit = true;
 })
-    .AddRoles<IdentityRole>() 
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<SurveyManagerContext>();
-
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.Cookie.HttpOnly = true;
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-//    options.SlidingExpiration = true;
-//    options.LoginPath = "/Account/Login";
-//    options.AccessDeniedPath = "/Account/AccessDenied";
-//});
-
-
 
 // MVC + Razor Pages
 builder.Services.AddControllersWithViews();
@@ -51,10 +48,12 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// ================================
+// Auto-migrate + initializer
+// ================================
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var context = services.GetRequiredService<SurveyManagerContext>();
 
     // Retry na wypadek gdy baza jeszcze nie jest gotowa
@@ -65,13 +64,13 @@ using (var scope = app.Services.CreateScope())
         {
             context.Database.Migrate();
             Console.WriteLine("Baza danych zaktualizowana do najnowszej migracji.");
-            break; // sukces, wychodzimy z pêtli
+            break; // sukces
         }
         catch (Exception ex)
         {
             Console.WriteLine($"B³¹d migracji bazy (próba {i + 1}/{retries}): {ex.Message}");
-            if (i == retries - 1) throw; // ostatnia próba, wyrzucamy wyj¹tek
-            Thread.Sleep(5000); // czekaj 5 sekund przed kolejn¹ prób¹
+            if (i == retries - 1) throw;
+            Thread.Sleep(5000);
         }
     }
 
@@ -101,6 +100,7 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
+// Listen na wszystkich interfejsach
 app.Urls.Add("http://0.0.0.0:5000");
 
 app.Run();
