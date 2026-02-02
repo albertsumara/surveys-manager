@@ -10,7 +10,7 @@ public static class SurveyResultsInitializer
 {
     public static async Task InitializeAsync(IServiceProvider services, Random random)
     {
-        var context = services.GetRequiredService<ProjektContext>();
+        var context = services.GetRequiredService<SurveyManagerContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
         if (await context.SurveyResults.AnyAsync())

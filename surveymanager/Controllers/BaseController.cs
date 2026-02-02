@@ -8,10 +8,10 @@ namespace Projekt.Controllers
     public class BaseController : Controller
     {
 
-        protected readonly ProjektContext _context;
+        protected readonly SurveyManagerContext _context;
         protected readonly UserManager<ApplicationUser> _userManager;
 
-        public BaseController(UserManager<ApplicationUser> userManager, ProjektContext context)
+        public BaseController(UserManager<ApplicationUser> userManager, SurveyManagerContext context)
         {
             _context = context;
             _userManager = userManager;

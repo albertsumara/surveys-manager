@@ -14,7 +14,7 @@ namespace Projekt.Controllers
 
         private int[] completedSurveys;
 
-        public SurveyResultsController(UserManager<ApplicationUser> userManager, ProjektContext context) : base(userManager, context)
+        public SurveyResultsController(UserManager<ApplicationUser> userManager, SurveyManagerContext context) : base(userManager, context)
         {
 
             completedSurveys = CompletedSurveys().ToArray();

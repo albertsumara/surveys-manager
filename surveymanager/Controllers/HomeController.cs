@@ -14,9 +14,9 @@ namespace Projekt.Controllers
 
 
 
-        protected readonly ProjektContext _context;
+        protected readonly SurveyManagerContext _context;
 
-        public HomeController(ProjektContext context)
+        public HomeController(SurveyManagerContext context)
         {
             _context = context;
         }

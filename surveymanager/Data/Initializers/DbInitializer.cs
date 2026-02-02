@@ -10,4 +10,8 @@ public static class DbInitializer
         var random = new Random();
         await SurveyResultsInitializer.InitializeAsync(services, random);
     }
+
+
+
+
 }

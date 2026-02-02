@@ -9,7 +9,7 @@ namespace Projekt.Controllers
     public class SurveyController : BaseController
     {
 
-        public SurveyController(UserManager<ApplicationUser> userManager, ProjektContext context) : base(userManager, context)
+        public SurveyController(UserManager<ApplicationUser> userManager, SurveyManagerContext context) : base(userManager, context)
         {
         }
 

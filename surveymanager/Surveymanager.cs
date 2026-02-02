@@ -15,9 +15,12 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// DbContext
-builder.Services.AddDbContext<ProjektContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//// DbContext
+//builder.Services.AddDbContext<ProjektContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<SurveyManagerContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -29,7 +32,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireDigit = true;
 })
     .AddRoles<IdentityRole>() 
-    .AddEntityFrameworkStores<ProjektContext>();
+    .AddEntityFrameworkStores<SurveyManagerContext>();
 
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
@@ -51,6 +54,27 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<SurveyManagerContext>();
+
+    // Retry na wypadek gdy baza jeszcze nie jest gotowa
+    var retries = 5;
+    for (int i = 0; i < retries; i++)
+    {
+        try
+        {
+            context.Database.Migrate();
+            Console.WriteLine("Baza danych zaktualizowana do najnowszej migracji.");
+            break; // sukces, wychodzimy z pêtli
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"B³¹d migracji bazy (próba {i + 1}/{retries}): {ex.Message}");
+            if (i == retries - 1) throw; // ostatnia próba, wyrzucamy wyj¹tek
+            Thread.Sleep(5000); // czekaj 5 sekund przed kolejn¹ prób¹
+        }
+    }
+
     await DbInitializer.InitializeAsync(services);
 }
 
@@ -61,7 +85,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseSession();
@@ -76,5 +100,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+app.Urls.Add("http://0.0.0.0:5000");
 
 app.Run();

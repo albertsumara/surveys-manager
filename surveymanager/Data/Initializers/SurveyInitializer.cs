@@ -7,7 +7,7 @@ public static class SurveyInitializer
 {
     public static async Task InitializeAsync(IServiceProvider services)
     {
-        var context = services.GetRequiredService<ProjektContext>();
+        var context = services.GetRequiredService<SurveyManagerContext>();
 
         if (await context.Surveys.AnyAsync())
             return; // już istnieją ankiety

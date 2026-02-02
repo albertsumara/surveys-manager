@@ -4,10 +4,10 @@ using Projekt.Models;
 
 namespace Projekt.Data
 {
-    public class ProjektContext
+    public class SurveyManagerContext
         : IdentityDbContext<ApplicationUser>
     {
-        public ProjektContext(DbContextOptions<ProjektContext> options)
+        public SurveyManagerContext(DbContextOptions<SurveyManagerContext> options)
             : base(options)
         {
         }
