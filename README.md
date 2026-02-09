@@ -7,7 +7,7 @@ You can try the application live here: [Survey Manager](https://surveys-manager.
 
 <div align="center">
 
-![Appview](assets/appviewsurvey.gif)
+![Appview](assets/appviewsurveys.gif)
 
 </div>
 
