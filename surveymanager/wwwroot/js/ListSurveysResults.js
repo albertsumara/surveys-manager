@@ -69,20 +69,3 @@ function saveSurveyToSession(surveyId) {
         })
         .catch(err => console.error("Error saving survey:", err));
 }
-
-
-
-//async function isCompleted(surveyId) {
-
-//    try {
-//        const response = await fetch(`/SurveyResults/IsCompleted?surveyId=${surveyId}`);
-//        const result = await response.json();
-//        console.log(result);
-//        return result;
-//    } catch (err) {
-//        console.error(err);
-//        return;
-//    }
-    
-
-//}

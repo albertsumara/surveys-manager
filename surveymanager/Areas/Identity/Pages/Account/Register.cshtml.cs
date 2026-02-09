@@ -26,11 +26,11 @@ namespace Projekt.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Display(Name = "First Name")]
+            [Display(Name = "Imię")]
             public string Name { get; set; }
 
             [Required]
-            [Display(Name = "Last Name")]
+            [Display(Name = "Nazwisko")]
             public string Surname { get; set; }
 
             [Required]
@@ -38,7 +38,7 @@ namespace Projekt.Areas.Identity.Pages.Account
             public int? Age { get; set; }
 
             [Required]
-            [Display(Name = "Town")]
+            [Display(Name = "Miasto")]
             public ApplicationUser.Miasta Town { get; set; }
 
             [Required]
@@ -48,11 +48,11 @@ namespace Projekt.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Hasło")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm Password")]
+            [Display(Name = "Powtórz hasło")]
             [Compare("Password", ErrorMessage = "Passwords do not match.")]
             public string ConfirmPassword { get; set; }
         }

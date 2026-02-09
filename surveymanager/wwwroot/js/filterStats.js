@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const ageFromInput = document.createElement("input");
             ageFromInput.id = "ageFrom";
             ageFromInput.value = 18;
-            ageFromInput.placeholder = "od";
+            ageFromInput.placeholder = "od (min.18)";
             filterDiv.appendChild(ageFromInput);
 
 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const ageToInput = document.createElement("input");
             ageToInput.id = "ageTo";
             ageToInput.value = 99;
-            ageToInput.placeholder = "od";
+            ageToInput.placeholder = "do (max.99)";
             filterDiv.appendChild(ageToInput);
 
             filterDiv.appendChild(document.createElement(`br`));

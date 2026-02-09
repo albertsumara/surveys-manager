@@ -13,7 +13,6 @@
             })
             .then(questions => {
 
-                //console.log(questions);
 
             });
 
@@ -63,39 +62,84 @@ function listAnswers(questionId, containerDiv, answerStats = {}) {
                 total += answerStats[answerId];
             }
 
+            const table = document.createElement("table");
+            table.classList.add("results-table");
+
+            const thead = document.createElement("thead");
+            thead.innerHTML = `
+                <tr>
+                    <th>Odpowiedź</th>
+                    <th>Głosy</th>
+                    <th>Procent</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+
             answers.forEach(answer => {
+                const count = answerStats[answer.id] || 0;
+                const percent = total > 0 ? Math.round((count / total) * 100) : 0;
 
-                const paragraph = document.createElement("p");
-                paragraph.textContent = answer.content;
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${answer.content}</td>
+                    <td>${count}</td>
+                    <td>${percent}%</td>
+                `;
 
-                const strong = document.createElement("strong")
-
-                if ((answer.id in answerStats) && (total > 0)) {
-
-                    console.log("jest");
-                   strong.textContent = `    ${Math.round(answerStats[answer.id] / total * 100)}%`
-
-
-                }
-
-                else {
-                    strong.textContent = `    0%`
-                }
-
-                paragraph.appendChild(strong);
-                containerDiv.appendChild(paragraph);
-
-
+                tbody.appendChild(row);
             });
+
+            table.appendChild(tbody);
+            containerDiv.appendChild(table);
         })
         .catch(error => console.error("Error fetching answers:", error));
 }
+
+
+//function listAnswers(questionId, containerDiv, answerStats = {}) {
+//    fetch(`/Survey/ListAnswers?questionId=${questionId}`)
+//        .then(response => response.json())
+//        .then(answers => {
+
+//            let total = 0;
+//            for (const answerId in answerStats) {
+//                total += answerStats[answerId];
+//            }
+
+//            answers.forEach(answer => {
+
+//                const paragraph = document.createElement("p");
+//                paragraph.textContent = answer.content;
+
+//                const strong = document.createElement("strong")
+
+//                if ((answer.id in answerStats) && (total > 0)) {
+
+//                    console.log("jest");
+//                   strong.textContent = `    ${Math.round(answerStats[answer.id] / total * 100)}%`
+
+
+//                }
+
+//                else {
+//                    strong.textContent = `    0%`
+//                }
+
+//                paragraph.appendChild(strong);
+//                containerDiv.appendChild(paragraph);
+
+
+//            });
+//        })
+//        .catch(error => console.error("Error fetching answers:", error));
+//}
 
 async function getStats(surveyId) {
     try {
         const response = await fetch(`/SurveyResults/GetStats?surveyId=${surveyId}`);
         const stats = await response.json();
-        //console.log("stats", stats)
         return stats;
     } catch (err) {
         console.error(err);

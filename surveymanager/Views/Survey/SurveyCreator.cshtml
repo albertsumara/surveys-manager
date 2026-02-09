@@ -6,7 +6,6 @@
 
 
 <style>
-    /* Ukrywanie wszystkich kroków poza pierwszym */
     .step {
         display: none;
     }
@@ -28,33 +27,35 @@
 </style>
 
 
-
+<div class="page-wrapper">
 
 <div id="step-title" class="step active">
     <h2>Podaj tytuł ankiety:</h2>
-    <input type="text" id="surveyTitle" placeholder="tytuł">
-    <button id="setTitleBtn">Dalej</button>
+        <input type="text" id="surveyTitle" placeholder="tytuł"></br>
+        <button id="setTitleBtn">Dalej</button></br>
 </div>
 
 <div id="step-question" class="step">
     <h2>Podaj treść pytania:</h2>
-    <input type="text" id="surveyQuestionContent" placeholder="pytanie">
-    <button id="setQuestionContentBtn">Dalej</button>
-    <button id="backToTitle">Cofnij</button>
-    <button id="setSurvey" >Zapisz ankietę.</button>
+        <input type="text" id="surveyQuestionContent" placeholder="pytanie"></br>
+        <button id="setQuestionContentBtn">Dalej</button></br>
+    @* <button id="backToTitle">Cofnij</button> *@
+        <button id="setSurvey">Zapisz ankietę.</button></br>
 
 </div>
 
 <div id="step-answer" class="step">
     <h2>Dodaj odpowiedź</h2>
-    <input type="text" id="surveyAnswerContent" placeholder="odpowiedź">
-    <button id="setAnswerContentBtn">Dodaj odpowiedź</button>
-    <button id="setQuestion">Zapisz pytanie.</button>
+        <input type="text" id="surveyAnswerContent" placeholder="odpowiedź"></br>
+        <button id="setAnswerContentBtn">Dodaj odpowiedź</button></br>
+        <button id="setQuestion">Zapisz pytanie.</button></br>
     @* <button id="backToQuestion">Cofnij/Następne pytanie.</button> *@
 
 </div>
 <div id="succes-div"></div>
 <div id="error"></div>
+
+</div>
 
 <script src="~/js/surveyCreator.js"></script>
 

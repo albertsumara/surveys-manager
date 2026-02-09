@@ -163,10 +163,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (survey.questions.length < 1) {
             showError("Survey must have at least 1 question!");
-
-
             //window.location.href = "/Survey/CreateSurveyAnswer";
-            succesInfo("Ankieta stworzona pomyślnie!");
+            // succesInfo("Ankieta stworzona pomyślnie!");
             return;
         }
 
