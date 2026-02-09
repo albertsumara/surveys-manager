@@ -220,3 +220,52 @@ a:focus {
 .step.active {
     display: flex;
 }
+
+.answers-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0.75rem 0 2rem 0;
+    font-size: 0.95rem;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.answers-table th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #5B6570;
+}
+
+.answers-table td {
+        padding: 0.85rem 1rem;
+        border-top: 1px solid #ECEFF2;
+        color: #2B2F33;
+}
+
+.answers-table thead {
+    background: linear-gradient(180deg, #F4F6F8 0%, #E9EDF1 100%);
+}
+.answers-table tbody tr:hover td {
+    background: #F1F4F7;
+    transition: background 0.15s ease-in-out;
+}
+.answers-table tbody tr:nth-child(even) {
+    background: #FAFBFC;
+}
+.answers-table td:first-child {
+    width: 50px;
+    text-align: center;
+}
+.answers-table input[type="radio"] {
+    transform: scale(1.2);
+    margin: 0 auto;
+    display: block;
+}

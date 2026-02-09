@@ -87,31 +87,87 @@ function getSurveyId() {
         });
 }
 
+//function listAnswers(questionId, containerDiv) {
+//    fetch(`/Survey/ListAnswers?questionId=${questionId}`)
+//        .then(response => response.json())
+//        .then(answers => {
+//            //containerDiv.innerHTML = "";
+//            //console.log(answers);
+//            answers.forEach(answer => {
+//                //console.log(answer);
+//                const input = document.createElement("input");
+//                const label = document.createElement("label");
+//                const br = document.createElement("br");
+
+
+//                input.setAttribute("type", "radio");
+//                input.setAttribute("name", questionId);
+//                input.setAttribute("value", answer.id);
+
+//                //input.textContent = answer.content;
+
+//                label.appendChild(input);
+//                label.append(answer.content);
+
+//                containerDiv.appendChild(label);
+//                containerDiv.appendChild(br);
+//            });
+//        })
+//        .catch(error => console.error("Error fetching answers:", error));
+//}
+
+
 function listAnswers(questionId, containerDiv) {
     fetch(`/Survey/ListAnswers?questionId=${questionId}`)
         .then(response => response.json())
         .then(answers => {
-            //containerDiv.innerHTML = "";
-            //console.log(answers);
+            console.log("Answers for question", questionId, answers);
+            if (!answers || answers.length === 0) {
+                containerDiv.textContent = "Brak odpowiedzi dla tego pytania.";
+                return;
+            }
+
+            const table = document.createElement("table");
+            table.classList.add("answers-table");
+            table.style.borderCollapse = "collapse";
+            table.style.marginTop = "5px";
+
+            const thead = document.createElement("thead");
+            thead.innerHTML = `
+                <tr>
+                    <th style="padding: 5px; border: 1px solid #ccc;">Wybierz</th>
+                    <th style="padding: 5px; border: 1px solid #ccc;">Odpowiedź</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+
             answers.forEach(answer => {
-                //console.log(answer);
+                const row = document.createElement("tr");
+
+                const radioTd = document.createElement("td");
+                radioTd.style.padding = "5px";
+                radioTd.style.border = "1px solid #ccc";
+
                 const input = document.createElement("input");
-                const label = document.createElement("label");
-                const br = document.createElement("br");
-                
+                input.type = "radio";
+                input.name = questionId;  // WAŻNE: FormData użyje tego jako klucz
+                input.value = answer.id;
+                radioTd.appendChild(input);
 
-                input.setAttribute("type", "radio");
-                input.setAttribute("name", questionId);
-                input.setAttribute("value", answer.id);
+                const textTd = document.createElement("td");
+                textTd.textContent = answer.content;
+                textTd.style.padding = "5px";
+                textTd.style.border = "1px solid #ccc";
 
-                //input.textContent = answer.content;
-
-                label.appendChild(input);
-                label.append(answer.content);
-                
-                containerDiv.appendChild(label);
-                containerDiv.appendChild(br);
+                row.appendChild(radioTd);
+                row.appendChild(textTd);
+                tbody.appendChild(row);
             });
+
+            table.appendChild(tbody);
+            containerDiv.appendChild(table);
         })
         .catch(error => console.error("Error fetching answers:", error));
 }
