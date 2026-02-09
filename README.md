@@ -1,15 +1,22 @@
-# BDWAI – system zarządzania ankietami / Survey Management System
+## [ENG] – Survey Management System
 
-## [ENG] BDWAI – Survey Management System
+It is a simple web application for managing surveys — administrators can create surveys, and users can fill them out. The app also provides statistics, which can be filtered by age and location of respondents. The application is now fully containerized using **Docker**, and the database runs on **PostgreSQL**.
 
-It is a simple web application for managing surveys — administrators can create surveys, and users can fill them out. The app also provides statistics, which can be filtered by age and location of respondents.
+### Project Preview
+You can try the application live here: [Survey Manager](https://surveys-manager.onrender.com)
+
+<div align="center">
+
+![Appview](assets/appviewsurvey.gif)
+
+</div>
 
 ### Technologies
 - **C#**
 - **ASP.NET**
 - **Entity Framework**
 - **ASP.NET Identity**
-- **SQL Server (SSMS)**
+- **PostgreSQL (running in Docker)**
 
 ### How it works
 
@@ -23,7 +30,7 @@ It is a simple web application for managing surveys — administrators can creat
 **Surveys**
 - Surveys are created by the administrator,
 - Users can fill out available surveys online,
-- Responses are stored in a relational database.
+- Responses are stored in a **PostgreSQL** relational database.
 
 **Statistics**
 - Statistics are available for all users,
@@ -33,12 +40,12 @@ It is a simple web application for managing surveys — administrators can creat
 - The goal was to demonstrate practical use of database queries in a web application.
 
 **Database**
-- Application uses **SQL Server**, and the database structure is created and managed via **SQL Server Management Studio (SSMS)**,
-- User data and survey data are handled using **Entity Framework**.
+- Application now uses **PostgreSQL**, running inside a Docker container,
+- All user and survey data are handled via **Entity Framework**.
 
 ### Project goal
 The goal of the project was to practice:
-- integrating a relational database with a web application,
+- integrating a relational database with a web application using **PostgreSQL**,
 - implementing a login system with user roles,
 - applying business logic for surveys and data analysis.
 
@@ -48,16 +55,16 @@ The repository has been archived.
 
 ---
 
-## [PL] BDWAI – system zarządzania ankietami
+## [PL] – system zarządzania ankietami
 
-Jest to prosta aplikacja webowa do zarządzania ankietami — administrator tworzy ankiety, a użytkownicy mogą je wypełniać. Aplikacja udostępnia również statystyki, które można filtrować m.in. po wieku i lokalizacji respondentów.
+Jest to prosta aplikacja webowa do zarządzania ankietami — administrator tworzy ankiety, a użytkownicy mogą je wypełniać. Aplikacja udostępnia również statystyki, które można filtrować m.in. po wieku i lokalizacji respondentów. Cała aplikacja jest teraz uruchamiana w **Dockerze**, a baza danych działa na **PostgreSQL**.
 
 ### Technologie
 - **C#**
 - **ASP.NET**
 - **Entity Framework**
 - **ASP.NET Identity**
-- **SQL Server (SSMS)**
+- **PostgreSQL (uruchomiony w Dockerze)**
 
 ### Jak działa aplikacja
 
@@ -71,7 +78,7 @@ Jest to prosta aplikacja webowa do zarządzania ankietami — administrator twor
 **Ankiety**
 - Ankiety są tworzone przez administratora,
 - Użytkownicy mogą wypełniać dostępne ankiety online,
-- Odpowiedzi zapisywane są w relacyjnej bazie danych.
+- Odpowiedzi zapisywane są w **PostgreSQL**.
 
 **Statystyki**
 - Statystyki są dostępne dla wszystkich użytkowników,
@@ -81,12 +88,12 @@ Jest to prosta aplikacja webowa do zarządzania ankietami — administrator twor
 - Celem było pokazanie praktycznego wykorzystania zapytań do bazy danych w aplikacji webowej.
 
 **Baza danych**
-- Aplikacja korzysta z **SQL Server**, a struktura bazy była tworzona i zarządzana przy użyciu **SQL Server Management Studio (SSMS)**,
+- Aplikacja korzysta z **PostgreSQL**, działającego w kontenerze Docker,
 - Dane użytkowników i ankiet są obsługiwane przez **Entity Framework**.
 
 ### Cel projektu
 Celem projektu było praktyczne połączenie:
-- relacyjnej bazy danych z aplikacją webową,
+- relacyjnej bazy danych (**PostgreSQL**) z aplikacją webową,
 - systemu logowania i ról użytkowników,
 - logiki biznesowej związanej z ankietami i analizą danych.
 
