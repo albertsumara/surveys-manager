@@ -11,6 +11,11 @@ You can try the application live here: [Survey Manager](https://surveys-manager.
 
 </div>
 
+You can log in using the default administrator account:
+
+**Login:** admin@admin.admin 
+**Password:** Admin123!
+
 ### Technologies
 - **C#**
 - **ASP.NET**
